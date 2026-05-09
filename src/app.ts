@@ -1,8 +1,10 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
 import profileRoutes from './routes/profileRoutes';
 import { errorHandler, notFound } from './middleware/errorHandler';
+import { swaggerSpec } from './config/swagger';
 
 dotenv.config();
 
@@ -24,6 +26,13 @@ app.use((req: Request, res: Response, next) => {
   next();
 });
 
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Mohamed Portfolio API Documentation',
+}));
+
 // Health check
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({
@@ -42,6 +51,7 @@ app.get('/', (req: Request, res: Response) => {
     success: true,
     message: 'Developer Portfolio API',
     version: '1.0.0',
+    documentation: 'http://localhost:5000/api-docs',
     endpoints: {
       create: 'POST /api/profile',
       get: 'GET /api/profile',

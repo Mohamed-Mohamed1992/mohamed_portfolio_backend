@@ -3,7 +3,40 @@ import { Profile } from '../models/Profile';
 import { ApiResponse } from '../types';
 
 export class ProfileController {
-  // Create new profile
+  /**
+   * @swagger
+   * /profile:
+   *   post:
+   *     summary: Create a new profile
+   *     tags: [Profile]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Profile'
+   *     responses:
+   *       201:
+   *         description: Profile created successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                   example: true
+   *                 message:
+   *                   type: string
+   *                   example: Profile created successfully
+   *                 data:
+   *                   $ref: '#/components/schemas/Profile'
+   *       400:
+   *         description: Profile already exists
+   *         $ref: '#/components/responses/BadRequest'
+   *       500:
+   *         $ref: '#/components/responses/ServerError'
+   */
   static async createProfile(req: Request, res: Response): Promise<void> {
     try {
       const profileData = req.body;
@@ -33,7 +66,31 @@ export class ProfileController {
     }
   }
 
-  // Get profile
+  /**
+   * @swagger
+   * /profile:
+   *   get:
+   *     summary: Get full profile details
+   *     tags: [Profile]
+   *     responses:
+   *       200:
+   *         description: Profile retrieved successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                 message:
+   *                   type: string
+   *                 data:
+   *                   $ref: '#/components/schemas/Profile'
+   *       404:
+   *         $ref: '#/components/responses/NotFound'
+   *       500:
+   *         $ref: '#/components/responses/ServerError'
+   */
   static async getProfile(req: Request, res: Response): Promise<void> {
     try {
       const profile = await Profile.findOne();
@@ -60,7 +117,37 @@ export class ProfileController {
     }
   }
 
-  // Update full profile
+  /**
+   * @swagger
+   * /profile:
+   *   put:
+   *     summary: Update full profile (all fields)
+   *     tags: [Profile]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Profile'
+   *     responses:
+   *       200:
+   *         description: Profile updated successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                 message:
+   *                   type: string
+   *                 data:
+   *                   $ref: '#/components/schemas/Profile'
+   *       404:
+   *         $ref: '#/components/responses/NotFound'
+   *       500:
+   *         $ref: '#/components/responses/ServerError'
+   */
   static async updateProfile(req: Request, res: Response): Promise<void> {
     try {
       const profile = await Profile.findOne();
@@ -90,7 +177,40 @@ export class ProfileController {
     }
   }
 
-  // Partial update (PATCH)
+  /**
+   * @swagger
+   * /profile:
+   *   patch:
+   *     summary: Partially update profile (specific fields)
+   *     tags: [Profile]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               name:
+   *                 type: string
+   *               availability:
+   *                 type: string
+   *                 enum: [available, interviewing, not-available]
+   *               expectedSalary:
+   *                 type: number
+   *               willingToRelocate:
+   *                 type: boolean
+   *               skills:
+   *                 type: array
+   *                 items:
+   *                   type: string
+   *     responses:
+   *       200:
+   *         description: Profile updated successfully
+   *       404:
+   *         $ref: '#/components/responses/NotFound'
+   *       500:
+   *         $ref: '#/components/responses/ServerError'
+   */
   static async patchProfile(req: Request, res: Response): Promise<void> {
     try {
       const profile = await Profile.findOne();
@@ -134,7 +254,31 @@ export class ProfileController {
     }
   }
 
-  // Delete profile
+  /**
+   * @swagger
+   * /profile:
+   *   delete:
+   *     summary: Delete profile
+   *     tags: [Profile]
+   *     responses:
+   *       200:
+   *         description: Profile deleted successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                   example: true
+   *                 message:
+   *                   type: string
+   *                   example: Profile deleted successfully
+   *       404:
+   *         $ref: '#/components/responses/NotFound'
+   *       500:
+   *         $ref: '#/components/responses/ServerError'
+   */
   static async deleteProfile(req: Request, res: Response): Promise<void> {
     try {
       const profile = await Profile.findOne();
@@ -161,7 +305,31 @@ export class ProfileController {
     }
   }
 
-  // Get public profile (limited fields)
+  /**
+   * @swagger
+   * /profile/public:
+   *   get:
+   *     summary: Get public profile (limited fields for public view)
+   *     tags: [Profile]
+   *     responses:
+   *       200:
+   *         description: Public profile retrieved successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success:
+   *                   type: boolean
+   *                 message:
+   *                   type: string
+   *                 data:
+   *                   $ref: '#/components/schemas/PublicProfile'
+   *       404:
+   *         $ref: '#/components/responses/NotFound'
+   *       500:
+   *         $ref: '#/components/responses/ServerError'
+   */
   static async getPublicProfile(req: Request, res: Response): Promise<void> {
     try {
       const profile = await Profile.findOne({
